@@ -14,7 +14,7 @@ class Lex(object):
         self._tokens = self._tokenize(self._lines)
         self._token_type = T_ERROR  # Current token type
         self._cur_val = 0           # Current token value
-    
+
     def __str__(self):
         pass
 
@@ -25,10 +25,10 @@ class Lex(object):
     def closeout(self):
         self._outfile.write('</tokens>')
         self._outfile.close()
-        
+
     def has_more_tokens(self):
         return self._tokens != []
-        
+
     def advance(self):
         if self.has_more_tokens():
             self._token_type, self._cur_val = self._tokens.pop(0)
@@ -36,7 +36,7 @@ class Lex(object):
             self._token_type, self._cur_val = (T_ERROR, 0)
         self._writexml()
         return (self._token_type, self._cur_val)
-        
+
     def peek(self):
         if self.has_more_tokens():
             return self._tokens[0]
@@ -53,34 +53,34 @@ class Lex(object):
         elif tok == T_ID:       self._outfile.write(self.identifier())
         elif tok == T_ERROR:    self._outfile.write('<<ERROR>>')
         self._write_end_tag(tokens[tok])
-        
+
     def _write_start_tag(self, token):
         self._outfile.write('<'+token+'> ')
-    
+
     def _write_end_tag(self, token):
         self._outfile.write(' </'+token+'>\n')
-        
+
     def token_type(self):
         return self._token_type
-        
+
     def keyword(self):
         return self._cur_val
-        
+
     def symbol(self):
         return self._cur_val
-        
+
     def identifier(self):
         return self._cur_val
-        
+
     def int_val(self):
         return self._cur_val
-        
+
     def string_val(self):
         return self._cur_val
-                
+
     def _tokenize(self, lines):
         return [self._token(word) for word in self._split(self._remove_comments(lines))]
-	
+
     _comment_re = re.compile(r'//[^\n]*\n|/\*(.*?)\*/', re.MULTILINE|re.DOTALL)
     def _remove_comments(self, line):
         return self._comment_re.sub('', line)
@@ -104,18 +104,18 @@ class Lex(object):
 
     def _is_keyword(self, word):
         return self._is_match(self._keyword_re, word)
-        
+
     def _is_sym(self, word):
         return self._is_match(self._sym_re, word)
-        
+
     def _is_num(self, word):
         return self._is_match(self._num_re, word)
-        
+
     def _is_str(self, word):
         return self._is_match(self._str_re, word)
-        
+
     def _is_id(self, word):
         return self._is_match(self._id_re, word)
-        
+
     def _is_match(self, re_str, word):
         return re.match(re_str, word) != None
