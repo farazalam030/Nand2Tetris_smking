@@ -13,7 +13,7 @@ class Screen {
     static int black_pixel;
     static boolean white;
     static boolean black;
-    
+
     /** Initializes the Screen. */
     function void init() {
         let screen = 16384;
@@ -48,7 +48,7 @@ class Screen {
         var int mask;
 
         let address = (y*32) + (x/16);
-        let mask = Math.two_to_the(x & 15));
+        let mask = Math.two_to_the(x & 15);
 
         if( cur_colour ) {
             let screen[address] = screen[address] | mask;
@@ -64,7 +64,7 @@ class Screen {
     function void drawLine(int x1, int y1, int x2, int y2) {
         var int dx, dy;
         var int temp;
-        
+
         // Make sure x1 <= x2
         if( x1 > x2 ) {
             let temp = x1;
@@ -77,7 +77,7 @@ class Screen {
 
         let dx = x2 - x1;
         let dy = y2 - y1;
-        
+
         if( dx = 0 ) {
             do Screen.drawVerticalLine( x1, y1, y2 );
         }
@@ -87,10 +87,10 @@ class Screen {
         else {
             do Screen.drawDiagonalLine( x1, y1, x2, y2, dx, dy );
         }}
-        
+
         return;
     }
-    
+
     function void drawDiagonalLine( int x1, int y1, int x2, int y2, int dx, int dy ) {
         var int a, b;
         var int adyMinusbdx;
@@ -99,7 +99,7 @@ class Screen {
         let a = 0;
         let b = 0;
         let adyMinusbdx = 0;
-        
+
         if( dy < 0 ) {
             let y_incr = -1;
         }
@@ -123,25 +123,25 @@ class Screen {
 
     function void drawVerticalLine( int x, int y1, int y2 ) {
         var int temp;
-        
+
         // Make sure y1 <= y2
         if( y1 > y2 ) {
             let temp = y1;
             let y1 = y2;
             let y2 = temp;
         }
-        
+
         while( ~(y1 > y2) ) {
             do Screen.drawPixel( x, y1 );
             let y1 = y1 + 1;
         }
         return;
     }
-    
+
     function void drawHorizontalLine( int x1, int x2, int y ) {
         var int start_addr, end_addr;
         var int x1mod16, x2mod16;
-        
+
         let x1mod16 = x1 & 15;
         let x2mod16 = x2 & 15;
         let start_addr = (y*32) + (x1/16);
@@ -150,7 +150,7 @@ class Screen {
         if( start_addr = end_addr ) {   // line starts and ends within the same screen address
             do Screen.draw_short_horizontal_line( x1, x2, y );
         }
-        else { 
+        else {
             if( ~(x1mod16 = 0) ) {      // Draw the short start of the line
                 let start_addr = start_addr + 1;
                 do Screen.draw_short_horizontal_line( x1, x1+16-x1mod16, y );
@@ -164,24 +164,24 @@ class Screen {
                 let start_addr = start_addr + 1;
             }
         }
-        
+
         return;
     }
-    
+
     function void draw_short_horizontal_line( int x1, int x2, int y ) {
         while( ~(x1 > x2) ) {
             do Screen.drawPixel( x1, y );
             let x1 = x1 + 1;
         }
-    
+
         return;
     }
-    
+
     /** Draws a filled rectangle where the top left corner
      *  is (x1, y1) and the bottom right corner is (x2, y2). */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
         var int y;
-        
+
         let y = y1;
         while( ~(y > y2) ) {
             do Screen.drawHorizontalLine(x1, x2, y);
@@ -194,7 +194,7 @@ class Screen {
     function void drawCircle(int cx, int cy, int r) {
         var int dx, dy;
         var int r_squared;
-        
+
         let dy = -r;
         let r_squared = r*r;
         while( ~(dy > r) ) {
